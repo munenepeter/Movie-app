@@ -4,22 +4,44 @@
  function check_internet_connection($sCheckHost = 'www.google.com') {
   return (bool) @fsockopen($sCheckHost, 80, $iErrno, $sErrStr, 5);
   }
+
+  //display the app if connection is available
   if(check_internet_connection()){
     #Run the code and display the movies 
-        
+    //number of pages available
+    $limit = 100;  
+    //get the page number dynamic with the pagination
+   if(isset($_GET['page'])){
+     $pageNumber = $_GET['page'];
+   }else{
+    $pageNumber = 1;
+   }
+    //this is for pagination
+     $currentPage = $pageNumber + 0;
+     $previousPage = $pageNumber - 2;
+     $nextPage = $pageNumber + 2;
+
         // API information.
         $originalUrl = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=';
         //for looping purposes
-        $pageNumber = 1;
+       
         $url = $originalUrl . $pageNumber;
         //getting the image
         $imgURL   = "https://image.tmdb.org/t/p/w1280";
+
+        /*
+         * Implement the search feature.
+         * Take in the key words frm the search form and 
+         * add the $searchUrl
+         */
         $searchUrl =  "https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1&query=";
 
         //get the data 
         $response = file_get_contents($url);
         $data = json_decode($response);
         $data = $data->results;
+    
+        
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,25 +52,24 @@
   <!-- CSS only -->
   <link rel="stylesheet" href="style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-  <link rel="apple-touch-icon" sizes="57x57" href="/favicon/android-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="/favicon//apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/favicon//apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="/favicon//apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/favicon//apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="/favicon//apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="/favicon//apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/favicon//apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon//apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="/favicon//android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon//favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="/favicon//favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon//favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="57x57" href="favicon/android-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="favicon//apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="favicon//apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="favicon//apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="favicon//apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="favicon//apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="favicon//apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="favicon//apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon//apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon//android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon//favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon//favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon//favicon-16x16.png">
 </head>
 
 <body>
   <div id="main" class="container-fluid">
     <div class="px-lg-5">
-
       <!-- Top part-->
       <div class="row py-3 ">
         <div class="col-lg-12 mx-auto">
@@ -56,16 +77,17 @@
             <h1 class="display-4">Movies search App</h1>
             <p class="lead">Search for latest movies</p>
             <!-- Search form -->
-            <form action="" id="form">
+            <form action="" id="form" method="get">
               <div class="col-lg-6 md-form active-cyan active-cyan-2 mb-3">
-                <input id="search" class="form-control" type="text" placeholder="Search for Movies" aria-label="Search">
+                <input id="search" class="form-control" name="search" type="text" placeholder="Search for Movies" aria-label="Search">
               </div>
             </form>
           </div>
         </div>
       </div>
-      <!-- End -->
+      <!-- End Navigation -->
       <?php
+      
                 $count = 3;
                 echo '<div class="row">';
                 foreach ($data as $movies) {
@@ -132,7 +154,9 @@
               </div>
               <p id="desc" class="small text-muted mb-0">
                 <?php
-                echo date_format(date_create($movies->release_date), "d, F Y");
+                $releaseDate = date_format(date_create($movies->release_date), "d, F Y");
+             
+                echo $releaseDate;
                 ?>
               </p>
             </div>
@@ -146,52 +170,34 @@
       <?php $count++;
       }
       ?>
-      <div class="py-5 text-right">
+      <div class="py-2 text-right">
         <form action="" method="post">
           <button name="submit" type="submit" class="btn btn-dark px-5 py-3 text-uppercase">Show me more</button>
         </form>
       </div>
-      <?php
-      /* 
-      * Get the value of each button from js(form->Post)
-      * Check ...aki sijui
-      * Implement the pagination
-      */ 
-      ?>
+    
       <nav aria-label="Page navigation example">
-        <ul class="list-inline pagination justify-content-left">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        <ul class="list-inline pagination justify-content-center">
+          <li class="page-item ">
+            <a class="page-link p-2" href="<?php echo 'index.php?page='.$previousPage;  ?>" tabindex="-1" aria-disabled="false">Previous</a>
           </li>
-          <form action="" method="post">
-            <li class="list-inline-item page-item">
-              <btn type="submit" name="submitpg" value="" class="page-link">1</btn>
-            </li>
-            <li class="list-inline-item page-item">
-              <btn type="submit" name="submitpg" value="" class="page-link">2</btn>
-            </li>
-            <li class="list-inline-item page-item">
-              <btn type="submit" name="submitpg" value="" class="page-link">3</btn>
-            </li>
-            <li class="list-inline-item page-item">
-              <btn type="submit" name="submitpg" value="" class="page-link">4</btn>
-            </li>
-            <li class="list-inline-item page-item">
-              <btn type="submit" name="submitpg" value="" class="page-link">5</btn>
-            </li>
-            <li class="list-inline-item page-item">
-              <btn type="submit" name="submitpg" value="" class="page-link">6</btn>
-            </li>
-            <li class="list-inline-item page-item">
-              <btn type="submit" name="submitpg" value="" class="page-link">7</btn>
-            </li>
-            <li class="list-inline-item page-item">
-              <btn type="submit" name="submitpg" value="" class="page-link">8</btn>
-            </li>
-           
-          </form>
+          <?php
+
+            $total_pages = $limit/10;
+
+            if($_GET['page'] >= 2){
+              $start_from = ($pageNumber-1);  
+            }else{
+              $start_from = 1;
+            }
+
+            for ($i = $start_from; $i <= $total_pages; $i++) {
+             echo "<li class='page-item'><a class='page-link p-2' href='index.php?page=".$i."'>".$i."</a></li>";	
+             };
+             ?>
+             
           <li class="page-item">
-            <a class="page-link" href="#">Next</a>
+            <a class="page-link  p-2" href="<?php echo 'index.php?page='.$nextPage;  ?>" tabindex="-1" aria-disabled="true">Next</a>
           </li>
         </ul>
       </nav>
@@ -202,18 +208,12 @@
   </script>
   <?php
       }else{
-          // Notify the user that he/she is offline and cant use the APP  
-
+          // Notify the user that he/she is offline and can't use the APP  
             // include error.php
             require_once 'error.php';
-            //dispaly the error page as the machine/user is offline
-            $errorFile = 'error.php';
-            echo file_get_contents($errorFile);  
-          
      }
-
     ?> 
-  <script src="index.js"></script>
+  <!-- <script src="index.js"></script> -->
 </body>
 
 </html>
