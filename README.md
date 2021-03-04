@@ -2,7 +2,7 @@
 
 Movie App is a simple PHP application built using bootstrap and fetching data from [The moviedb API](https://api.themoviedb.org).
 
-![Image of MovieApp](blob:https://imgur.com/71f9e485-7f20-42f5-a091-8a9644ba20de)
+![Image of MovieApp](https://i.postimg.cc/SNz9YGd0/front.png)
 
 ![Image of MovieApp](https://pasteboard.co/JR68WTG.png)
 
