@@ -1,5 +1,6 @@
 <!-- 
-    This Document only loads when the user is offline
+    --This Document only loads when the user is offline
+    --This Document only loads when the user is offline
  -->
 <!DOCTYPE html>
 <html lang="en">
@@ -7,10 +8,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Offline!</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="apple-touch-icon" sizes="57x57" href="favicon/android-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="favicon//apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="favicon//apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="favicon//apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="favicon//apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="favicon//apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="favicon//apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="favicon//apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon//apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon//android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon//favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon//favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon//favicon-16x16.png">
 </head>
 <style>
    @import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,700');
 @import url('https://fonts.googleapis.com/css?family=Catamaran:400,800');
+body{
+  margin: 0;
+  padding: 0;
+  height: 98vh;
+}
 .error-container {
   text-align: center;
   font-size: 180px;
@@ -316,5 +336,5 @@ a.more-link {
         <div class="link-container">
             <a target="_blank" href="https://github.com/munenepeter" class="more-link">By peter munene</a>
         </div>
-    </div>
+</div>
  
